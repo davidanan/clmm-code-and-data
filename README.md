@@ -15,7 +15,7 @@ Jiaxing Zhao, and Chi Zhang
 
 **Article DOI:** Pending
 
-**Archived code-and-data version:** `v1.0.0` (Zenodo DOI pending)
+**Archived code-and-data version:** `v1.0.0` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21728327.svg)](https://doi.org/10.5281/zenodo.21728327)
 
 ## Scope
 
@@ -151,4 +151,4 @@ modified, describe the changes made, and cite the original archived release.
 ## Citation
 
 Please cite the associated manuscript and the archived Zenodo release. The final
-article citation and Zenodo DOI will be added when available.
+article citation will be added when available.
