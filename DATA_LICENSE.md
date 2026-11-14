@@ -11,10 +11,9 @@ manuscript:
 
 > Zhou, Shunan; Lyu, Heng; Eltner, Anette; Zamboni, Pedro; Wang, Nan;
 > Zhao, Jiaxing; and Zhang, Chi (2026). *Code and data for “Sparse validation can
-> mask process errors in urban flood modelling”*, version 1.0.0. Zenodo. DOI pending.
+> mask process errors in urban flood modelling”*, version 1.0.0. [Zenodo](https://doi.org/10.5281/zenodo.21728327).
 
-The DOI in this citation must be replaced with the DOI assigned to the published
-Zenodo record.
+The CSVs in this repository have the same contents as the archived files and use updated filenames.
 
 ## Data Integrity
 

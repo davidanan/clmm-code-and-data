@@ -1,81 +1,21 @@
-# Software Environment
+# Running the R scripts
 
-The release scripts were checked in the environment below.
+The scripts were checked on Apple silicon with R 4.5.2, cmdstanr 0.8.0 and CmdStan 2.38.0. They use base R to read and prepare the data and cmdstanr to compile and sample the embedded Stan models.
 
-## Tested Platform
+## Setup
 
-- Operating system: macOS Sequoia 15.6.1
-- Architecture: Apple silicon (`aarch64-apple-darwin20`)
-- R version: 4.5.2
-- CmdStan version: 2.38.0
-
-Other recent operating systems and R versions may work but were not tested for this
-release.
-
-## R Packages
-
-| Package | Tested version |
-| --- | --- |
-| `dplyr` | 1.2.0 |
-| `tidyr` | 1.3.2 |
-| `stringr` | 1.6.0 |
-| `purrr` | 1.2.1 |
-| `readr` | 2.1.6 |
-| `tibble` | 3.3.1 |
-| `brms` | 2.23.0 |
-| `cmdstanr` | 0.8.0 |
-| `posterior` | 1.6.1 |
-| `openxlsx` | 4.2.8.1 |
-| `bayesplot` | 1.15.0 |
-| `ggplot2` | 4.0.2 |
-
-## Installation
-
-Install the required R packages from CRAN and the Stan package repository:
+Install R and a C++ toolchain for CmdStan. In an R session, run:
 
 ```r
-install.packages(c(
-  "dplyr", "tidyr", "stringr", "purrr", "readr", "tibble",
-  "brms", "posterior", "openxlsx", "bayesplot", "ggplot2"
-))
-
-install.packages(
-  "cmdstanr",
-  repos = c("https://stan-dev.r-universe.dev", "https://cloud.r-project.org")
-)
-```
-
-Install and verify the CmdStan version used for this release:
-
-```r
-cmdstanr::install_cmdstan(version = "2.38.0")
-cmdstanr::cmdstan_version()
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", "https://cloud.r-project.org"))
 cmdstanr::check_cmdstan_toolchain()
+cmdstanr::install_cmdstan(version = "2.38.0")
 ```
 
-The installation of CmdStan requires a working C++ toolchain. See the official
-`cmdstanr` installation documentation if toolchain configuration is required for the
-operating system.
+If CmdStan is already installed, check the installation with `cmdstanr::cmdstan_version()`. For a non-default location, set the `CMDSTAN` environment variable to the installation directory before starting R.
 
-## Computational Requirements
+## Sampling
 
-The released fits use four Markov chain Monte Carlo chains with 3,000 iterations per
-chain, including 1,500 warmup iterations. Full fitting is computationally intensive,
-and wall-clock time depends strongly on the processor, compiler, and available cores.
-No portable runtime benchmark is reported. Four available CPU cores and 16 GB of RAM
-are a practical starting configuration.
+Each script runs four parallel chains with 1,500 adaptive warmup iterations and 2,000 retained draws per chain. The target acceptance probability is 0.95 and the maximum tree depth is 12. These scripts use the manuscript's likelihood and priors and tune the sampler at each new fit. The manuscript runs used chain-specific settings from pilot fits and 200 further warmup iterations at fixed settings. Individual posterior draws will therefore differ.
 
-Before a full fit, run the preprocessing-only checks:
-
-```bash
-CLMM_PREP_ONLY=TRUE Rscript code/01_fit_phase_diagnostic_clmm.R
-CLMM_PREP_ONLY=TRUE Rscript code/01_fit_conditional_discrepancy_clmm.R
-```
-
-## Notes
-
-- fitting uses `brms` with the `cmdstanr` backend;
-- evaluation scripts can read model objects from one results directory and write
-  evaluation outputs to another;
-- all default file references use paths relative to the repository root;
-- numerical results may vary slightly across platforms or package versions.
+The standalone entry points were checked by compilation and short sampling runs. For a full refit, inspect sampler diagnostics, R-hat and effective sample sizes before summarising the posterior.
